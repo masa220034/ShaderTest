@@ -68,6 +68,6 @@ float4 PS(VS_OUT inData) : SV_Target
 		diffuse = lightSource * diffuseColor * inData.color;
 		ambient = lightSource * diffuseColor * ambentSource;
     }
-
+	float4 output = (diffuse + ambient) * inData.uv.x;
 	return diffuse + ambient;
 }
