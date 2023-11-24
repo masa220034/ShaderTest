@@ -3,7 +3,7 @@
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hModel_(-1)
+    :GameObject(parent, "Stage"), hGround_(-1), hBall_(-1)
 {
 }
 
@@ -16,8 +16,10 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("assets/Ground.fbx");
-    assert(hModel_ >= 0);
+    hGround_ = Model::Load("assets/Ground.fbx");
+    hBall_ = Model::Load("assets/Ball.fbx");
+    assert(hGround_ >= 0);
+    assert(hBall_ >= 0);
 }
 
 //更新
@@ -28,8 +30,10 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
+    Model::SetTransform(hGround_, transform_);
+    Model::SetTransform(hBall_, transform_);
+    Model::Draw(hGround_);
+    Model::Draw(hBall_);
 }
 
 //開放
