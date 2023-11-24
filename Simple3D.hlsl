@@ -41,7 +41,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 
 	//法線を回転
 	normal = mul(normal , matNormal);
-	float4 light = float4(0, 1, -1, 0); //光源ベクトル
+	float4 light = float4(-1, 0, 0, 0); //光源ベクトル
 	light = normalize(light);
 	outData.color = clamp(dot(normal, light), 0, 1); //法線と光源をかけている
 
