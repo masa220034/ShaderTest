@@ -1,9 +1,10 @@
 #include "Stage.h"
 #include "Engine/Model.h"
+#include "Engine/Camera.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hGround_(-1), hBall_(-1)
+    :GameObject(parent, "Stage"), hGround_(-1)
 {
 }
 
@@ -17,23 +18,22 @@ void Stage::Initialize()
 {
     //モデルデータのロード
     hGround_ = Model::Load("assets/Ground.fbx");
-    hBall_ = Model::Load("assets/Ball.fbx");
     assert(hGround_ >= 0);
-    assert(hBall_ >= 0);
 }
 
 //更新
 void Stage::Update()
 {
+    Camera::SetPosition(XMFLOAT3(2, 3, -3));
+
+    transform_.scale_ = XMFLOAT3(2.5f, 2.5f, 2.5f);
 }
 
 //描画
 void Stage::Draw()
 {
     Model::SetTransform(hGround_, transform_);
-    Model::SetTransform(hBall_, transform_);
     Model::Draw(hGround_);
-    Model::Draw(hBall_);
 }
 
 //開放

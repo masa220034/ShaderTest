@@ -2,15 +2,15 @@
 #include "Engine/GameObject.h"
 
 //◆◆◆を管理するクラス
-class Stage : public GameObject
+class Arrow : public GameObject
 {
-    int hGround_;
+    int hArrow_;
 public:
     //コンストラクタ
-    Stage(GameObject* parent);
+    Arrow(GameObject* parent);
 
     //デストラクタ
-    ~Stage();
+    ~Arrow();
 
     //初期化
     void Initialize() override;

@@ -2,15 +2,15 @@
 #include "Engine/GameObject.h"
 
 //◆◆◆を管理するクラス
-class Stage : public GameObject
+class Ball : public GameObject
 {
-    int hGround_;
+    int hBall_;
 public:
     //コンストラクタ
-    Stage(GameObject* parent);
+    Ball(GameObject* parent);
 
     //デストラクタ
-    ~Stage();
+    ~Ball();
 
     //初期化
     void Initialize() override;
@@ -24,4 +24,3 @@ public:
     //開放
     void Release() override;
 };
-
