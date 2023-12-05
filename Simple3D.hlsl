@@ -37,18 +37,23 @@ struct VS_OUT
 VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 {
 	//ピクセルシェーダーへ渡す情報
-	VS_OUT outData;
+	VS_OUT outData = (VS_OUT)0;
 
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
 	outData.pos = mul(pos, matWVP);
 	outData.uv = uv;
-
-	//法線を回転
+	normal.w = 0;
 	normal = mul(normal , matNormal);
-	float4 light = float4(-1, 0, 0, 0); //光源ベクトル
+	normal = normalize(normal);
+	outData.normal = normal;
+
+	float4 light = normalize(lightPosition); //光源ベクトル
 	light = normalize(light);
-	outData.color = clamp(dot(normal, light), 0, 1); //法線と光源をかけている
+
+	outData.color = saturate(dot(normal, light));
+	float4 posw = mul(pos, matW);
+	outData.eyev = eyePosition - posw;
 
 	//まとめて出力
 	return outData;
@@ -63,18 +68,22 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 ambientSource = float4(0.2, 0.2, 0.2, 1.0);
 	float4 diffuse;
 	float4 ambient;
-	if (isTextured == true)
-	{
-		diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv)* inData.color;
-		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv)* ambientSource;
-	}
-	else
+	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
+	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8);
+
+	if (isTextured == 0)
 	{
 		diffuse = lightSource * diffuseColor * inData.color;
 		ambient = lightSource * diffuseColor * ambientSource;
 	}
+	else
+	{
+		diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
+		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientSource;
+	}
 
-	return diffuse + ambient;
+	return diffuse + ambient + specular;
 
 	/*float4 output = (diffuse + ambient) * inData.uv.x;
 	float4 output = g_texture.Sample(g_sampler, inData.uv);
