@@ -14,8 +14,8 @@ cbuffer global
 	float4x4    matW;           // ワールド行列
 	float4x4	matNormal;	    //ワールド行列
 	float4		diffuseColor;	// マテリアルの色＝拡散反射係数
-	float4      lightPosition;
-	float4      eyePosition;
+	float4      lightPosition;  //点光源座標
+	float4      eyePosition;    //視点座標
 	float4      specular;
 	float       shuniness;
 	bool		isTextured;		// テクスチャ貼ってあるかどうか
@@ -29,8 +29,8 @@ struct VS_OUT
 	float4 pos    : SV_POSITION; //位置
 	float2 uv	  : TEXCOORD;	 //UV座標
 	float4 color  : COLOR;	     //色（明るさ）
-	float4 eyev   : POSITION;
-	float4 normal : NORMAL;
+	float4 eyev   : POSITION;    //ワールド座標系の座標
+	float4 normal : NORMAL;      //ワールド座標系の法線
 };
 
 //───────────────────────────────────────
@@ -86,8 +86,4 @@ float4 PS(VS_OUT inData) : SV_Target
 	}
 
 	return diffuse + ambient + specular;
-
-	/*float4 output = (diffuse + ambient) * inData.uv.x;
-	float4 output = g_texture.Sample(g_sampler, inData.uv);
-	return output;*/
 }
