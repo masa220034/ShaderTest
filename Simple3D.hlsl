@@ -16,6 +16,8 @@ cbuffer global
 	float4		diffuseColor;	// マテリアルの色＝拡散反射係数
 	float4      lightPosition;
 	float4      eyePosition;
+	float4      specular;
+	float       shuniness;
 	bool		isTextured;		// テクスチャ貼ってあるかどうか
 };
 

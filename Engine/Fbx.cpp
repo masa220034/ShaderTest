@@ -163,6 +163,8 @@ void Fbx::IntConstantBuffer()
 
 void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 {
+	//マテリアルバッファの生成
+	materialCount_ = pNode->GetMaterialCount();
 	pMaterialList_ = new MATERIAL[materialCount_];
 
 	for (int i = 0; i < materialCount_; i++)

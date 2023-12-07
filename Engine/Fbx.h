@@ -31,6 +31,8 @@ class Fbx
 		XMFLOAT4    diffuseColor; //FBXÇ©ÇÁÇ∆Ç¡ÇƒÇ´ÇΩñ ÇÃêF
 		XMFLOAT4    lightPosition;
 		XMFLOAT4    eyePos;
+		XMFLOAT4    specular;
+		FLOAT       shininess;
 		BOOL        isTextured;
 	};
 
