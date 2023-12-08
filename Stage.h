@@ -1,10 +1,27 @@
 #pragma once
 #include "Engine/GameObject.h"
 
+namespace {
+    const XMFLOAT4 
+}
+struct CBUFF_STAGESCENE
+{
+    XMFLOAT4   lightPosition;
+    XMFLOAT4   eyePos;
+};
+
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
+    int hModel_;
     int hGround_;
+    int hLIghtBall_;
+    Transform trDonuts;
+    Transform trGround;
+    Transform trLightBall;
+    ID3D11Buffer* pCBStageScene_;
+    void IntConstantBuffer();
+    XMFLOAT4  lightSourcePosition_;
 public:
     //コンストラクタ
     Stage(GameObject* parent);
@@ -23,5 +40,8 @@ public:
 
     //開放
     void Release() override;
+
+    void SetLightPos(XMFLOAT4& _pos) { lightSourcePosition_ = _pos; }
+    XMFLOAT4 GetLightPos() { return(lightSourcePosition_); }
 };
 

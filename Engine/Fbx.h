@@ -29,10 +29,10 @@ class Fbx
 		XMMATRIX    matW; //ワールド変換のみ
 		XMMATRIX	matNormal; //スケール×平行移動の逆行列
 		XMFLOAT4    diffuseColor; //FBXからとってきた面の色
-		XMFLOAT4    lightPosition;
+		/*XMFLOAT4    lightPosition;
 		XMFLOAT4    eyePos;
 		XMFLOAT4    specular;
-		FLOAT       shininess;
+		FLOAT       shininess;*/
 		BOOL        isTextured;
 	};
 
