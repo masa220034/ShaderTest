@@ -1,11 +1,10 @@
 #include "Stage.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include "Engine/Input.h"
 
-//コンストラクタ
-Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hGround_(-1), lightPosition
-{
+namespace {
+    const XMFLOAT4 DEF_LIGHT_POSITION{ 1,2,1,0 };
 }
 
 void Stage::IntConstantBuffer()
@@ -17,7 +16,16 @@ void Stage::IntConstantBuffer()
     cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     cb.MiscFlags = 0;
     cb.StructureByteStride = 0;
-    Direct3D::pDevice_->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
+
+    //コンスタントバッファの作成
+    HRESULT hr;
+    hr = Direct3D::pDevice_->CreateBuffer(&cb, nullptr, &pCBStageScene_);
+}
+
+//コンストラクタ
+Stage::Stage(GameObject* parent)
+    :GameObject(parent, "Stage"), hGround_(-1), lightSourcePosition_(DEF_LIGHT_POSITION)
+{
 }
 
 //デストラクタ

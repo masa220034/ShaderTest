@@ -27,7 +27,7 @@ HRESULT Texture::Load(string filename)
 	ScratchImage image;
 	HRESULT hr;
 	hr = LoadFromWICFile(wtext, WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
-
+	imgSize_ = XMFLOAT2{ (float)image.GetImages()->width, (float)image.GetImages()->height };
 	if (FAILED(hr))
 	{
 		return E_FAIL;
@@ -45,6 +45,7 @@ HRESULT Texture::Load(string filename)
 		return E_FAIL;
 	}
 
+	//シェーダーリソースビュー
 	D3D11_SHADER_RESOURCE_VIEW_DESC srv = {};
 	srv.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;

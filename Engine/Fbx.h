@@ -10,7 +10,13 @@
 #pragma comment(lib, "LibXml2-MD.lib")
 #pragma comment(lib, "zlib-MD.lib")
 
-using namespace std;
+using std::vector;
+
+enum RENDER_STATE
+{
+	RENDER_DIRLIGHT,
+	RENDER_PNTLIGHT,
+};
 
 class Texture;
 
@@ -57,9 +63,11 @@ class Fbx
 	void InitIndex(fbxsdk::FbxMesh* mesh);
 	void IntConstantBuffer();
 	void InitMaterial(fbxsdk::FbxNode* pNode);
+	RENDER_STATE state_;
 public:
 	Fbx();
 	HRESULT Load(std::string fileName);
 	void    Draw(Transform& transform);
+	void    SetRenderingShader(RENDER_STATE _state) { state_ = _state; }
 	void    Release();
 };

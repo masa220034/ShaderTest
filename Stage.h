@@ -1,9 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Engine/Quad.h"
 
-namespace {
-    const XMFLOAT4 
-}
 struct CBUFF_STAGESCENE
 {
     XMFLOAT4   lightPosition;

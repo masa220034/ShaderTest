@@ -4,6 +4,7 @@
 namespace Model
 {
 	std::vector<ModelData*> modelList;
+	RENDER_STATE state_;
 }
 
 int Model::Load(std::string fileName)
@@ -43,6 +44,12 @@ void Model::SetTransform(int hModel, Transform transform)
 	modelList[hModel]->transform_ = transform;
 }
 
+Fbx* Model::GetModel(int hModel) 
+{
+	return modelList[hModel]->pFbx_;
+
+}
+
 void Model::Draw(int hModel)
 {
 	//モデル番号は、modelListのインデックス
@@ -69,4 +76,14 @@ void Model::Release()
 		SAFE_DELETE(modelList[i]);
 	}
 	modelList.clear();
+}
+
+void Model::ToggleRenderState()
+{
+	int n = (int)(Model::state_);
+	Model::state_ = (RENDER_STATE)(++n % 2);
+	for (auto& theI : modelList)
+	{
+		theI->pFbx_->SetRenderingShader(Model::state_);
+	}
 }

@@ -5,7 +5,8 @@
 
 Fbx::Fbx() :
 	 vertexCount_(0), polygonCount_(0), materialCount_(0),
-     pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr)
+     pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), 
+	 pMaterialList_(nullptr)
 {
 }
 
@@ -74,13 +75,13 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 
 			//頂点の位置
 			FbxVector4 pos = mesh->GetControlPointAt(index);
-			vertices[index].position = XMVectorSet((float)pos[0], (float)pos[1], (float)pos[2], 0.0f);
+			vertices[index].position = XMVectorSet((float)(-pos[0]), (float)pos[1], (float)pos[2], 0.0f);
 
 			//頂点のUV
 			FbxLayerElementUV* pUV = mesh->GetLayer(0)->GetUVs();
 			int uvIndex = mesh->GetTextureUVIndex(poly, vertex, FbxLayerElement::eTextureDiffuse);
 			FbxVector2  uv = pUV->GetDirectArray().GetAt(uvIndex);
-			vertices[index].uv = XMVectorSet((float)uv.mData[0], (float)(1.0f - uv.mData[1]), 0.0f, 0.0f);
+			vertices[index].uv = XMVectorSet((float)(uv.mData[0]), (float)(1.0 - uv.mData[1]), 0.0f, 0.0f);
 
 			//頂点の法線
 			FbxVector4 Normal;
@@ -209,7 +210,14 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_3D);
+	if (state_ == RENDER_DIRLIGHT)
+	{
+		Direct3D::SetShader(SHADER_3D);
+	}
+	else
+	{
+		Direct3D::SetShader(SHADER_POINT);
+	}
 	transform.Calclation();
 
 	for (int i = 0; i < materialCount_; i++)
@@ -252,6 +260,7 @@ void Fbx::Draw(Transform& transform)
 	   {
 		   ID3D11SamplerState* pSampler = pMaterialList_[i].pTexture->GetSampler();
 		   Direct3D::pContext_->PSSetSamplers(0, 1, &pSampler);
+
 		   ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
 		   Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 	   }

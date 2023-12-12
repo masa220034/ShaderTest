@@ -14,6 +14,8 @@ namespace Model
 	
 	int Load(std::string FileName);
 	void SetTransform(int hModel, Transform transfrom);
+	Fbx* GetModel(int _hModel);
 	void Draw(int hModel);
 	void Release();
+	void ToggleRenderState();
 }
