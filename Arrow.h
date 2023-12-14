@@ -1,9 +1,11 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Engine/Fbx.h"
 
 //◆◆◆を管理するクラス
 class Arrow : public GameObject
 {
+    Fbx* pFbx;
     int hArrow_;
 public:
     //コンストラクタ

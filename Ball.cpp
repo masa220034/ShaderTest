@@ -16,7 +16,7 @@ Ball::~Ball()
 void Ball::Initialize()
 {
     //モデルデータのロード
-    hBall_ = Model::Load("assets/Ball.fbx");
+    hBall_ = Model::Load("assets/Donuts.fbx");
     assert(hBall_ >= 0);
 }
 

@@ -14,6 +14,9 @@ cbuffer global:register(b0)
 	float4x4    matW;           // ワールド行列
 	float4x4	matNormal;	    //ワールド行列
 	float4		diffuseColor;	// マテリアルの色＝拡散反射係数
+	float4      ambientColor;   //環境光
+	float4      specularColor;  //鏡面反射＝ハイライト
+	float       shininess;
 	bool		isTextured;		// テクスチャ貼ってあるかどうか
 };
 
@@ -22,7 +25,6 @@ cbuffer global:register(b1)
 	float4      lightPosition;  //点光源座標
 	float4      eyePosition;    //視点座標
 	float4      specular;
-	float       shuniness;
 };
 
 //───────────────────────────────────────
@@ -76,7 +78,7 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 ambient;
 	float4 NL = dot(inData.normal, normalize(lightPosition)); //面の明るさ
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition)); //反射ベクトルを求めてる
-	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8);
+	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8) * specularColor;
 
 	if (isTextured == 0)
 	{

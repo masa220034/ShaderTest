@@ -172,6 +172,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 	{
 		//i番目のマテリアル情報を取得
 		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+		FbxSurfacePhong* pPhong = (FbxSurfacePhong*)pMaterial;
 
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -184,6 +185,26 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		{
 			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
 			const char* textureFilePath = textureInfo->GetRelativeFileName();
+
+			FbxDouble3 diffuse = pPhong->Diffuse;
+			FbxDouble3 ambient = pPhong->Ambient;
+			FbxDouble3 specular = pPhong->Specular;
+
+			pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
+			pMaterialList_[i].ambient = XMFLOAT4((float)ambient[0], (float)ambient[1], (float)ambient[2], 1.0f);
+			pMaterialList_[i].specular = XMFLOAT4(0, 0, 0, 0); //とりあえずハイライトは黒
+			pMaterialList_[i].shininess = 1; //0だとおかしくなるから1で初期化
+
+			//Mayaで指定したのがフォンシェーダーだったら
+			if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
+			{
+				//Mayaで指定したSpecularColorの情報
+				FbxDouble3 specular = pPhong->Specular;
+				pMaterialList_[i].specular = XMFLOAT4((float)specular[0], (float)specular[1], (float)specular[2], 1.0f);
+
+				FbxDouble shininess = pPhong->Shininess;
+				pMaterialList_[i].shininess = (float)pPhong->Shininess;
+			}
 
 			//ファイル名+拡張だけにする
 			char name[_MAX_FNAME];	//ファイル名
@@ -228,6 +249,10 @@ void Fbx::Draw(Transform& transform)
 	   cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 	   cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 	   cb.diffuseColor = pMaterialList_[i].diffuse;
+	   cb.ambientColor = pMaterialList_[i].ambient;
+	   cb.specularColor = pMaterialList_[i].specular;
+	   cb.shininess = pMaterialList_[i].shininess;
+
 	   //cb.lightPosition = lightSourcePosition_;
 	   //XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());
 	   //int n = (int) (pMaterialList_[i].pTexture != nullptr);
