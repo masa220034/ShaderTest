@@ -13,7 +13,7 @@ class Stage : public GameObject
 {
     int hModel_;
     int hGround_;
-    int hLIghtBall_;
+    int hLightBall_;
     Transform trDonuts;
     Transform trGround;
     Transform trLightBall;
