@@ -24,7 +24,6 @@ cbuffer global:register(b1)
 {
 	float4      lightPosition;  //点光源座標
 	float4      eyePosition;    //視点座標
-	float4      specular;
 };
 
 //───────────────────────────────────────
@@ -77,7 +76,8 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 diffuse;
 	float4 ambient;
 	float4 NL = dot(inData.normal, normalize(lightPosition)); //面の明るさ
-	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition)); //反射ベクトルを求めてる
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
+	//float4 reflection = reflect(normalize(-lightPosition), inData.normal);//反射ベクトルを求めてる
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8) * specularColor;
 
 	if (isTextured == 0)
