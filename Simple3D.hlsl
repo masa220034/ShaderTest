@@ -79,6 +79,19 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
 	//float4 reflection = reflect(normalize(-lightPosition), inData.normal);//”½ËƒxƒNƒgƒ‹‚ğ‹‚ß‚Ä‚é
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8) * specularColor;
+	float4 nk;
+	if (inData.color.x < 1 / 3.0)
+	{
+		nk = float4();
+	}
+	else if (inData.color.x < 2 / 3.0)
+	{
+		nk = float4();
+	}
+	else
+	{
+		nk = float4(1.0, 1.0, 1.0, 1.0);
+	}
 
 	if (isTextured == 0)
 	{
