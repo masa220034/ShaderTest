@@ -1,6 +1,6 @@
 #pragma once
 #include "Direct3D.h"
-#include <DirectXMath.h>
+#include "Transform.h"
 #include "Texture.h"
 #include <vector>
 
@@ -22,6 +22,7 @@ class Sprite
 		XMVECTOR position;
 		XMVECTOR uv;
 	};
+
 protected:
 	UINT64 vertexNum_;
 	std::vector<VERTEX> vertices_;
@@ -34,11 +35,12 @@ protected:
 	ID3D11Buffer* pConstantBuffer_;
 
 	Texture* pTexture_;
+
 public:
 	Sprite();
 	~Sprite();
 	HRESULT Initialize();
-	void Draw(XMMATRIX& worldMatrix);
+	void Draw(Transform& transform);
 	void Release();
 
 private:
@@ -52,6 +54,6 @@ private:
 
 	HRESULT LoadTexture();
 
-	void PassDataToCB(DirectX::XMMATRIX& worldMatrix);
+	void PassDataToCB(XMMATRIX worldMatrix);
 	void SetBufferToPipeline();
 };
