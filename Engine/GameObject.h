@@ -12,13 +12,12 @@ class SphereCollider;
 
 class GameObject
 {
-	bool IsDead_;
-
+	bool isDead_;
 protected:
-	list<GameObject *> childList_;
-	Transform	transform_;
-	GameObject*	pParent_;
-	string	objectName_;
+	list<GameObject*>	childList_;
+	Transform			transform_;
+	GameObject* pParent_;
+	string				objectName_; //オブジェクトの名前の文字列
 	SphereCollider* pCollider_;
 
 public:
@@ -45,13 +44,13 @@ public:
 
 public:
 	//テンプレートの定義
-	template<class T>
+	template <class T>
 	GameObject* Instantiate(GameObject* parent)
 	{
 		T* pObject;
 		pObject = new T(parent);
 		pObject->Initialize();
 		childList_.push_back(pObject);
-		return pObject;
+		return(pObject);
 	}
 };

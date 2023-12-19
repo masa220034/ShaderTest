@@ -34,17 +34,15 @@ XMMATRIX Transform::GetWorldMatrix()
 {
     if (pParent_ != nullptr)
     {
-        //親があったら親のWorldMatrixを掛ける
-        return matScale_ * matRotate_ * matTranslate_ * pParent_->GetWorldMatrix();
+        //親があったら親のワールドマトリクスを掛ける
+        return  matScale_ * matRotate_ * matTranslate_ * pParent_->GetWorldMatrix();
     }
-    else
-    {
-        //親がnullptrの時は、子の変換だけ
+    else //親がnullptrの時は、子の変換だけ
         return matScale_ * matRotate_ * matTranslate_;
-    }
 }
 
 XMMATRIX Transform::GetNormalMatrix()
 {
     return matRotate_ * XMMatrixInverse(nullptr, matScale_);
 }
+

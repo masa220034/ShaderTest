@@ -1,18 +1,23 @@
 #include "Sprite.h"
 #include "Camera.h"
 
-Sprite::Sprite():
-	vertexNum_(0),pVertexBuffer_(nullptr),
-	indexNum(0),pIndexBuffer_(nullptr),
-	pConstantBuffer_(nullptr), pTexture_(nullptr)
+
+//コンストラクタ
+Sprite::Sprite() :
+	vertexNum_(0), pVertexBuffer_(nullptr),
+	indexNum(0), pIndexBuffer_(nullptr),
+	pConstantBuffer_(nullptr),
+	pTexture_(nullptr)
 {
 }
 
+//デストラクタ
 Sprite::~Sprite()
 {
 	Release();
 }
 
+//初期化
 HRESULT Sprite::Initialize()
 {
 	//頂点情報
@@ -44,9 +49,12 @@ HRESULT Sprite::Initialize()
 	return S_OK;
 }
 
+
+//描画
 void Sprite::Draw(Transform& transform)
 {
 	Direct3D::SetShader(SHADER_2D);
+
 
 	transform.Calclation();//トランスフォームを計算
 
@@ -60,13 +68,16 @@ void Sprite::Draw(Transform& transform)
 	Direct3D::pContext_->DrawIndexed(indexNum, 0, 0);
 }
 
+//解放
 void Sprite::Release()
 {
+
 	SAFE_DELETE(pTexture_);
 	SAFE_RELEASE(pConstantBuffer_);
 	SAFE_RELEASE(pIndexBuffer_);
 	SAFE_RELEASE(pVertexBuffer_);
 }
+
 
 ///////////////ここからはprivate関数///////////////
 
@@ -223,3 +234,5 @@ void Sprite::SetBufferToPipeline()
 	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 }
+
+

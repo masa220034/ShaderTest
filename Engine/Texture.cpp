@@ -3,7 +3,8 @@
 
 #include <DirectXTex.h>
 
-#pragma comment(lib, "DirectXTex.lib" )
+#pragma comment(lib,"DirectXTex.lib")
+
 
 Texture::Texture()
 	:pSampler_(nullptr), pSRV_(nullptr)
@@ -18,6 +19,7 @@ Texture::~Texture()
 HRESULT Texture::Load(string filename)
 {
 	using namespace DirectX;
+	//////////画像読み込み部分（変更）
 
 	wchar_t wtext[FILENAME_MAX];
 	size_t ret;
@@ -28,11 +30,12 @@ HRESULT Texture::Load(string filename)
 	HRESULT hr;
 	hr = LoadFromWICFile(wtext, WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
 	imgSize_ = XMFLOAT2{ (float)image.GetImages()->width, (float)image.GetImages()->height };
+	/////////
 	if (FAILED(hr))
 	{
 		return E_FAIL;
 	}
-	//サンプラー作成
+	//サンプラーの作成
 	D3D11_SAMPLER_DESC  SamDesc;
 	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
 	SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -50,16 +53,17 @@ HRESULT Texture::Load(string filename)
 	srv.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srv.Texture2D.MipLevels = 1;
-	
+
 	hr = CreateShaderResourceView(Direct3D::pDevice_,
 		image.GetImages(), image.GetImageCount(), metadata, &pSRV_);
 	if (FAILED(hr))
 	{
 		return S_FALSE;
 	}
-
 	return S_OK;
 }
+
+
 
 void Texture::Release()
 {

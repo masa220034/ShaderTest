@@ -39,7 +39,7 @@ HRESULT Fbx::Load(std::string fileName)
 	//各情報の個数を取得
 	vertexCount_ = mesh->GetControlPointsCount();	//頂点の数
 	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
-	materialCount_ = pNode->GetMaterialCount();//メッシュに含まれるマテリアル数
+	materialCount_ = pNode->GetMaterialCount();
 
 	//現在のカレントディレクトリを取得
 	char defaultCurrentDir[MAX_PATH];
@@ -201,7 +201,6 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 		FbxSurfacePhong* pPhong = (FbxSurfacePhong*)pMaterial;
 
-
 		FbxDouble3  diffuse = pPhong->Diffuse;
 		FbxDouble3  ambient = pPhong->Ambient;
 
@@ -274,13 +273,10 @@ void Fbx::Draw(Transform& transform)
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
-
-
 		cb.diffuseColor = pMaterialList_[i].diffuse;
 		cb.ambientColor = pMaterialList_[i].ambient;
 		cb.specularColor = pMaterialList_[i].specular;
 		cb.shininess = pMaterialList_[i].shininess;
-
 		//cb.lightPosition = lightSourcePosition_;
 		//XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
 		//int n = (int)(pMaterialList_[i].pTexture != nullptr);
@@ -321,7 +317,6 @@ void Fbx::Draw(Transform& transform)
 			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
 			Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 		}
-
 
 		//描画
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);

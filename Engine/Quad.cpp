@@ -1,8 +1,8 @@
 #include "Quad.h"
 #include "Camera.h"
 
-Quad::Quad():
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), 
+Quad::Quad() :
+	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr),
 	pConstantBuffer_(nullptr), pTexture_(nullptr), vertexNum_(0), indexNum_(0)
 {
 }
@@ -14,6 +14,8 @@ Quad::~Quad()
 
 HRESULT Quad::Initialize()
 {
+
+
 	InitVertexData();
 	if (FAILED(CreateVertexBuffer()))
 	{
@@ -43,9 +45,9 @@ HRESULT Quad::Initialize()
 
 void Quad::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_3D);
-	transform.Calclation();
 
+	Direct3D::SetShader(SHADER_3D);
+	transform.Calclation();//トランスフォームを計算
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform);
 
@@ -54,6 +56,9 @@ void Quad::Draw(Transform& transform)
 
 	//描画
 	Direct3D::pContext_->DrawIndexed(index_.size(), 0, 0);
+
+
+
 }
 
 void Quad::Release()
@@ -162,7 +167,7 @@ HRESULT Quad::LoadTexture()
 	pTexture_ = new Texture;
 
 	HRESULT hr;
-	hr = pTexture_->Load("Assets\\...png");
+	hr = pTexture_->Load("Assets\\kaas.png");
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
@@ -173,12 +178,12 @@ HRESULT Quad::LoadTexture()
 
 
 //コンスタントバッファに各種情報を渡す
-void Quad::PassDataToCB(Transform& transform)
+void Quad::PassDataToCB(Transform transform)
 {
 
 	CONSTANT_BUFFER cb;
 	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-	cb.matNormal = XMMatrixTranspose(transform.GetWorldMatrix());
+	cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 	cb.wSize = pTexture_->GetTextureSize();
 
 	D3D11_MAPPED_SUBRESOURCE pdata;

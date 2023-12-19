@@ -13,7 +13,7 @@ struct CONSTANT_BUFFER
 {
 	XMMATRIX	matWVP;
 	XMMATRIX	matNormal; //matWからNormal用に改名
-	XMFLOAT2    wSize;
+	XMFLOAT2	wSize;
 };
 
 struct VERTEX
@@ -52,6 +52,6 @@ private:
 	HRESULT LoadTexture();
 
 	//---------Draw関数から呼ばれる関数---------
-	void PassDataToCB(Transform& transform);	//コンスタントバッファに各種情報を渡す
+	void PassDataToCB(Transform transform);	//コンスタントバッファに各種情報を渡す
 	void SetBufferToPipeline();
 };

@@ -17,9 +17,8 @@ public:
 	Texture();
 	~Texture();
 	XMFLOAT2 GetTextureSize() { return imgSize_; }
-	HRESULT Load(string fileName);
+	HRESULT Load(string filename);
 	void Release();
 	ID3D11SamplerState* GetSampler() { return pSampler_; }
 	ID3D11ShaderResourceView* GetSRV() { return pSRV_; }
 };
-

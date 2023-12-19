@@ -1,8 +1,9 @@
 #include "Model.h"
 #include "Direct3D.h"
 
-namespace Model
-{
+namespace Model {
+
+	//モデルのポインタをぶち込んでおくベクタ
 	std::vector<ModelData*> modelList;
 	RENDER_STATE state_;
 }
@@ -14,16 +15,15 @@ int Model::Load(std::string fileName)
 	pData->filename_ = fileName;
 	pData->pFbx_ = nullptr;
 
-	//ファイルネームが同じだったら、読まん!
+	//ファイルネームが同じだったら、読まん！
 	for (auto& e : modelList)
 	{
-		if (e->filename_ == fileName)
-		{
+		if (e->filename_ == fileName) {
 			pData->pFbx_ = e->pFbx_;
 			break;
 		}
 	}
-	
+
 	if (pData->pFbx_ == nullptr)
 	{
 		pData->pFbx_ = new Fbx;
@@ -36,25 +36,25 @@ int Model::Load(std::string fileName)
 
 void Model::SetTransform(int hModel, Transform transform)
 {
-	//モデル番号は、modelListのインデックス
 	modelList[hModel]->transform_ = transform;
+	//モデル番号は、modelListのインデックス
 }
 
-Fbx* Model::GetModel(int hModel) 
-{
-	return modelList[hModel]->pFbx_;
 
+
+Fbx* Model::GetModel(int _hModel)
+{
+	return modelList[_hModel]->pFbx_;
 }
 
-void Model::Draw(int hModel)
-{
+void Model::Draw(int hModel) {
 	//モデル番号は、modelListのインデックス
 	modelList[hModel]->pFbx_->Draw(modelList[hModel]->transform_);
 }
 
 void Model::Release()
 {
-	bool isReffered = false; //参照されてる?
+	bool isReffered = false; //参照されてる？
 	for (int i = 0; i < modelList.size(); i++)
 	{
 		for (int j = i + 1; j < modelList.size(); j++)

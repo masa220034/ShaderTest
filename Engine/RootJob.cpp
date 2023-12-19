@@ -1,6 +1,7 @@
 #include "RootJob.h"
 #include "SceneManager.h"
 
+
 RootJob::RootJob(GameObject* parent)
 	:GameObject(parent, "RootJob")
 {
@@ -26,7 +27,8 @@ void RootJob::Update()
 
 void RootJob::Draw()
 {
-	
+	//for (auto& e : childList_)
+	//	e->Draw();
 }
 
 void RootJob::Release()
